@@ -101,7 +101,7 @@ def computeTF(pat, M):
 
 #Loop through Patterns in array
 def validate_uname(username):
-    with open('/Users/ilaen/Documents/Project/pattens/Patterns.csv') as  f:
+    with open('pattens/Patterns.csv') as  f:
         array = f.readlines()
     array = [x.strip() for x in array]    
     # print(array)
