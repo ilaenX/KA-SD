@@ -1,5 +1,21 @@
 NO_OF_CHARS = 256
 
+def get_prefix_arr(pattern, b):
+    prefix_arr = [0] * b
+    n = 0
+    m = 1
+    while m != b:
+        if pattern[m] == pattern[n]:
+            n += 1
+            prefix_arr[m] = n
+            m += 1
+        elif n != 0:
+            n = prefix_arr[n-1]
+        else:
+            prefix_arr[m] = 0
+            m += 1
+    return prefix_arr
+
 def KMP_String(pattern, text):
     a = len(text)
     b = len(pattern)
@@ -21,56 +37,23 @@ def KMP_String(pattern, text):
             m += 1
     return initial_point
 
-
-#To avoid a useless shift of the pattern 
-def get_prefix_arr(pattern, b):
-    prefix_arr = [0] * b
-    n = 0
-    m = 1
-    while m != b:
-        if pattern[m] == pattern[n]:
-            n += 1
-            prefix_arr[m] = n
-            m += 1
-        elif n != 0:
-                n = prefix_arr[n-1]
-        else:
-            prefix_arr[m] = 0
-            m += 1
-    return prefix_arr
-
-#Deterministic Finite Automata 
 def DFA(pat, txt):
-    #Prints all occurrences of pat in txt
     global NO_OF_CHARS
     M = len(pat)
     N = len(txt)
     TF = computeTF(pat, M)    
   
-    # Process txt over FA.
     state=0
     for i in range(N):
         state = TF[state][ord(txt[i])]
         if state == M:
            return i-M+1
 
-def getNextState(pat, M, state, x):
-    #calculate the next state 
-    
-    # If the character c is same as next character 
-      # in pattern, then simply increment state
-  
+def getNextState(pat, state, x, M):
     if state < M and x == ord(pat[state]):
         return state+1
   
     i=0
-    # ns stores the result which is next state
-  
-    # ns finally contains the longest prefix 
-     # which is also suffix in "pat[0..state-1]c"
-  
-     # Start from the largest possible value and 
-      # stop when you find a prefix which is also suffix
     for ns in range(state,0,-1):
         if ord(pat[ns-1]) == x:
             while(i<ns-1):
@@ -81,12 +64,7 @@ def getNextState(pat, M, state, x):
                 return ns 
     return 0
 
-#Compute Transition Function
 def computeTF(pat, M):
-    '''
-    This function builds the Transition Function table which 
-    represents DFA for a given pattern
-    '''
     global NO_OF_CHARS
   
     TF = [[0 for i in range(NO_OF_CHARS)]\
@@ -94,22 +72,18 @@ def computeTF(pat, M):
   
     for state in range(M+1):
         for x in range(NO_OF_CHARS):
-            z = getNextState(pat, M, state, x)
+            z = getNextState(pat, state, x, M)
             TF[state][x] = z
   
     return TF
 
-#Loop through Patterns in array
 def validate_uname(username):
-    with open('pattens/Patterns.csv') as  f:
+    with open('pattens/Patterns.csv') as f:
         array = f.readlines()
     array = [x.strip() for x in array]    
-    # print(array)
-
-    res = KMP_String(array, username)
-    res2 = DFA(array,username)
-    if (res and res2) > 0:
-        return username
-
-    exists = username in array
-    return exists
+    for pattern in array:
+        res = KMP_String(pattern, username)
+        res2 = DFA(pattern, username)
+        if (res and res2) > 0:
+            return username
+    exists
