@@ -11,6 +11,5 @@ It's public for others to contribute and improve it.
 2. The time complexity of KMP_String() function is O(a+b), where a is the length of the text and b is the length of the pattern.
 3. The time complexity of computeTF() function is O(M*NO_OF_CHARS), where M is the length of the pattern and NO_OF_CHARS is the number of unique characters in the input alphabet.
 4. The time complexity of getNextState() function is O(M), where M is the length of the pattern.
-5. The time complexity of validate_uname() function is O(n * (a+b+M*NO_OF_CHARS)), where n is the number of patterns, a is the length of the text, b is the length of the pattern, and M is the length of the longest pattern.
 
 Therefore, the overall time complexity of the program is O(n * (a+b+M*NO_OF_CHARS)), where n is the number of patterns, a is the length of the text, b is the length of the pattern, and M is the length of the longest pattern.
