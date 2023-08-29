@@ -1,7 +1,7 @@
 NO_OF_CHARS = 256
 
-# Helper function to compute prefix array for pattern
 def get_prefix_arr(pattern, b):
+'''Helper function to compute prefix array for pattern'''
     prefix_arr = [0] * b
     n = 0
     m = 1
@@ -16,9 +16,9 @@ def get_prefix_arr(pattern, b):
             prefix_arr[m] = 0
             m += 1
     return prefix_arr
-
-# KMP string matching algorithm
+    
 def KMP_String(pattern, text):
+'''KMP string matching algorithm'''
     a = len(text)
     b = len(pattern)
     prefix_arr = get_prefix_arr(pattern, b)
@@ -39,8 +39,8 @@ def KMP_String(pattern, text):
             m += 1
     return initial_point
 
-# DFA algorithm for pattern matching
 def DFA(pat, txt):
+'''DFA algorithm for pattern matching'''
     global NO_OF_CHARS
     M = len(pat)
     N = len(txt)
@@ -53,8 +53,8 @@ def DFA(pat, txt):
             return i-M+1
     return -1
 
-# Helper function to get next state in DFA
 def getNextState(pat, state, x, M):
+'''Helper function to get next state in DFA'''
     if state < M and x == ord(pat[state]):
         return state+1
     i=0
@@ -68,8 +68,8 @@ def getNextState(pat, state, x, M):
                 return ns 
     return 0
 
-# Computes transition function for DFA
 def computeTF(pat, M):
+'''Computes transition function for DFA'''
     global NO_OF_CHARS
   
     TF = [[0 for i in range(NO_OF_CHARS)]\
@@ -81,8 +81,8 @@ def computeTF(pat, M):
             TF[state][x] = z
     return TF
 
-# Main function to validate username against patterns
 def validate_uname(username):
+'''Main function to validate username against patterns'''
     with open('pattens/Patterns.csv') as f:
         array = f.readlines()
     array = [x.strip() for x in array]    
@@ -90,6 +90,6 @@ def validate_uname(username):
         res1 = KMP_String(pattern, username)
         res2 = DFA(pattern, username)
         # If any matching index is found, return the input username
-        if res1 or res2 > 0:
+        if (res1 or res2) > 0:
             return username
     return None
